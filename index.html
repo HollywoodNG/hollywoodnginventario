@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explorá el inventario de vehículos de Hollywood NG.">
+  <title>Inventario | Hollywood NG</title>
+  <style>
+    :root {
+      --navy: #071426;
+      --blue: #123b70;
+      --light: #f3f6fa;
+      --white: #ffffff;
+      --text: #182438;
+      --muted: #68758a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--light);
+    }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 25px 6%;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand span { color: #76aefb; }
+
+    header p {
+      color: #d4deec;
+      margin-bottom: 0;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #071426, #164b86);
+      color: white;
+      padding: 48px 6%;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 48px);
+      margin: 0 0 12px;
+    }
+
+    .hero p {
+      color: #d9e7f8;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    main {
+      width: min(1200px, 92%);
+      margin: 30px auto 60px;
+    }
+
+    .filters {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #10284a0c;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 13px;
+    }
+
+    label {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9e0e9;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+    }
+
+    .inventory-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 30px 0 18px;
+    }
+
+    .inventory-heading h2 { margin: 0; }
+
+    #count {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .cars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      gap: 22px;
+    }
+
+    .car {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 5px 22px #10284a0d;
+    }
+
+    .car-photo {
+      height: 190px;
+      display: grid;
+      place-items: center;
+      background: #e4eaf2;
+      color: #5e6d81;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .car-photo span {
+      font-size: 45px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .car-info { padding: 18px; }
+
+    .badges {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: bold;
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #e7f1ff;
+      color: #174d8b;
+    }
+
+    .badge.rebuilt {
+      background: #fff0db;
+      color: #8a5100;
+    }
+
+    .car h3 { margin: 0 0 8px; font-size: 19px; }
+
+    .details {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 14px 0;
+      color: var(--navy);
+    }
+
+    .contact {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background: var(--blue);
+      padding: 13px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 10px;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    footer {
+      background: var(--navy);
+      color: #d4deec;
+      text-align: center;
+      padding: 25px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 550px) {
+      .hero { padding: 35px 5%; }
+      .inventory-heading { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">HOLLYWOOD <span>NG</span></div>
+    <p>Tu próximo auto empieza acá.</p>
+  </header>
+
+  <section class="hero">
+    <h1>Encontrá tu próximo vehículo</h1>
+    <p>Explorá nuestro inventario, compará opciones y consultanos por WhatsApp para conocer los detalles y las alternativas de financiamiento.</p>
+  </section>
+
+  <main>
+    <section class="filters" aria-label="Filtros de vehículos">
+      <div>
+        <label for="search">MARCA O MODELO</label>
+        <input id="search" placeholder="Ej. Toyota, Camry">
+      </div>
+      <div>
+        <label for="type">TIPO DE VEHÍCULO</label>
+        <select id="type">
+          <option value="">Todos</option>
+          <option>SUV</option>
+          <option>Sedan</option>
+          <option>Pickup</option>
+          <option>Coupe</option>
+          <option>Van</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div>
+        <label for="year">AÑO MÍNIMO</label>
+        <input id="year" type="number" placeholder="Ej. 2018">
+      </div>
+      <div>
+        <label for="maxPrice">PRECIO MÁXIMO ($)</label>
+        <input id="maxPrice" type="number" placeholder="Ej. 20000">
+      </div>
+      <div>
+        <label for="maxMiles">MILLAS MÁXIMAS</label>
+        <input id="maxMiles" type="number" placeholder="Ej. 90000">
+      </div>
+      <div>
+        <label for="title">TÍTULO</label>
+        <select id="title">
+          <option value="">Todos</option>
+          <option value="clean">Clean title</option>
+          <option value="rebuilt">Rebuilt title</option>
+        </select>
+      </div>
+    </section>
+
+    <div class="inventory-heading">
+      <h2>Inventario disponible</h2>
+      <span id="count"></span>
+    </div>
+
+    <section class="cars" id="cars"></section>
+  </main>
+
+  <footer>
+    <strong>HOLLYWOOD NG</strong>
+    <p>Consultá disponibilidad, precio y opciones de financiamiento con nuestro equipo.</p>
+    <span>Los vehículos y precios deben confirmarse con el concesionario.</span>
+  </footer>
+
+  <script>
+    // Ejemplos de muestra: reemplazar por vehículos reales antes de publicar.
+    const vehicles = [
+      {
+        make: "Toyota", model: "Camry", year: 2020,
+        type: "Sedan", price: 14500, miles: 72000,
+        title: "clean", stock: "DEMO-001"
+      },
+      {
+        make: "Toyota", model: "RAV4", year: 2021,
+        type: "SUV", price: 18900, miles: 65000,
+        title: "clean", stock: "DEMO-002"
+      },
+      {
+        make: "Ford", model: "F-150", year: 2019,
+        type: "Pickup", price: 16900, miles: 88000,
+        title: "rebuilt", stock: "DEMO-003"
+      }
+    ];
+
+    // Reemplazar por el número comercial autorizado de Hollywood NG.
+    const whatsappNumber = "";
+
+    const money = value => new Intl.NumberFormat("en-US", {
+      style: "currency", currency: "USD", maximumFractionDigits: 0
+    }).format(value);
+
+    function renderCars() {
+      const search = document.getElementById("search").value.toLowerCase().trim();
+      const type = document.getElementById("type").value;
+      const year = Number(document.getElementById("year").value) || 0;
+      const maxPrice = Number(document.getElementById("maxPrice").value) || Infinity;
+      const maxMiles = Number(document.getElementById("maxMiles").value) || Infinity;
+      const title = document.getElementById("title").value;
+
+      const filtered = vehicles.filter(car => {
+        const name = `${car.make} ${car.model}`.toLowerCase();
+        return (!search || name.includes(search)) &&
+          (!type || car.type === type) &&
+          car.year >= year &&
+          car.price <= maxPrice &&
+          car.miles <= maxMiles &&
+          (!title || car.title === title);
+      });
+
+      document.getElementById("count").textContent =
+        `${filtered.length} vehículo${filtered.length === 1 ? "" : "s"}`;
+
+      const container = document.getElementById("cars");
+
+      if (!filtered.length) {
+        container.innerHTML = '<div class="empty">No encontramos vehículos con esos filtros. Probá con otras opciones.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(car => {
+        const titleBadge = car.title === "rebuilt"
+          ? '<span class="badge rebuilt">Rebuilt title</span>'
+          : '<span class="badge">Clean title</span>';
+
+        const message = `Hola, quiero consultar por el ${car.year} ${car.make} ${car.model}, stock ${car.stock}.`;
+        const contactUrl = whatsappNumber
+          ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+          : `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+        return `
+          <article class="car">
+            <div class="car-photo">
+              <div><span>🚘</span>Foto del vehículo<br><small>${car.stock}</small></div>
+            </div>
+            <div class="car-info">
+              <div class="badges">${titleBadge}<span class="badge">${car.type}</span></div>
+              <h3>${car.year} ${car.make} ${car.model}</h3>
+              <div class="details">${car.miles.toLocaleString("en-US")} millas<br>Stock: ${car.stock}</div>
+              <div class="price">${money(car.price)}</div>
+              <a class="contact" href="${contactUrl}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    ["search", "type", "year", "maxPrice", "maxMiles", "title"].forEach(id => {
+      document.getElementById(id).addEventListener("input", renderCars);
+      document.getElementById(id).addEventListener("change", renderCars);
+    });
+
+    renderCars();
+  </script>
+</body>
+</html>
